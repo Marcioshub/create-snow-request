@@ -1,5 +1,5 @@
 # Demo of creating request in servicenow
-testing python script and servicenow api with ansible
+Testing python script and servicenow api with ansible
 
 ## Installation of requirements
 
@@ -11,5 +11,5 @@ pip3 install python-networkdays
 ## Usage
 
 ```bash
-ansible-playbook snow-playbook.yml
+ansible-playbook snow-playbook.yml --ask-vault-pass
 ```

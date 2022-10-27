@@ -30,20 +30,20 @@
     csv: "/Users/marciocastillo/Documents/Projects/create-request/roles/cr/files/Inactive_Users.csv"
   register: output
 
-# - name: dump test output
-#   debug:
-#     msg: "{{ output }}"
+- name: dump test output
+  debug:
+    msg: "{{ output }}"
 
-- name: Create request in servicenow
-  servicenow.itsm.api:
-    instance:
-      host: "{{ SN_HOST }}"
-      username: "{{ SN_USERNAME }}"
-      password: "{{ SN_PASSWORD }}"
-    resource: sc_request
-    action: post
-    data:
-      short_description: "Inactive User -- Temporary Disablement"
-      due_date: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
-      description: "Temporary Disablement for {{ item[0] }}, {{ item[1] }}"
-  loop: "{{ output.users }}"
+# - name: Create request in servicenow
+#   servicenow.itsm.api:
+#     instance:
+#       host: "{{ SN_HOST }}"
+#       username: "{{ SN_USERNAME }}"
+#       password: "{{ SN_PASSWORD }}"
+#     resource: sc_request
+#     action: post
+#     data:
+#       short_description: "Inactive User -- Temporary Disablement"
+#       due_date: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+#       description: "Temporary Disablement for {{ item[0] }}, {{ item[1] }}"
+#   loop: "{{ output.users }}"
