@@ -1,0 +1,49 @@
+#---
+# tasks file for cr
+#shell: "python3 {{ role_path }}/files/print_csv.py {{ role_path }}/files/holidays.json {{ role_path }}/files/Inactive_Users.csv"
+# - name: get CSV file via python script 
+#   shell: "python3 {{ CSV_SCRIPT }} {{ HOLIDAYS }} {{ INACTIVE_USERS_PATH }}"
+#   register: output
+
+# - name: Create request
+#   servicenow.itsm.api:
+#     instance:
+#       host: "{{ SN_HOST }}"
+#       username: "{{ SN_USERNAME }}"
+#       password: "{{ SN_PASSWORD }}"
+#     resource: sc_request
+#     action: post
+#     data:
+#       short_description: "Inactive User -- Temporary Disablement"
+#       due_date: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+#       description: "Temporary Disablement for {{ item[0] }}, {{ item[1] }}"
+#   loop: "{{ output.stdout }}"
+# - name: dump test output
+#   debug:
+#     msg: "{{ item }}"
+#   loop: "{{ output.users }}"
+
+---
+- name: run the filter_users module
+  filter_users:
+    holidays: "/Users/marciocastillo/Documents/Projects/create-request/roles/cr/files/holidays.json"
+    csv: "/Users/marciocastillo/Documents/Projects/create-request/roles/cr/files/Inactive_Users.csv"
+  register: output
+
+# - name: dump test output
+#   debug:
+#     msg: "{{ output }}"
+
+- name: Create request in servicenow
+  servicenow.itsm.api:
+    instance:
+      host: "{{ SN_HOST }}"
+      username: "{{ SN_USERNAME }}"
+      password: "{{ SN_PASSWORD }}"
+    resource: sc_request
+    action: post
+    data:
+      short_description: "Inactive User -- Temporary Disablement"
+      due_date: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+      description: "Temporary Disablement for {{ item[0] }}, {{ item[1] }}"
+  loop: "{{ output.users }}"
